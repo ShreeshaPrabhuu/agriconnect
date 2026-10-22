@@ -39,11 +39,11 @@ Since this is a static web application, no complex build tools or servers are re
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/AgriConnect.git](https://github.com/your-username/AgriConnect.git)
+    git clone [https://github.com/ShreeshaPrabhuu/agriconnect.git](https://github.com/ShreeshaPrabhuu/agriconnect.git)
     ```
 2.  **Navigate to the project folder:**
     ```bash
-    cd AgriConnect
+    cd agriconnect
     ```
 3.  **Run the application:**
     Simply open the `index.html` file in any modern web browser (Chrome, Firefox, Edge, Safari).
@@ -52,4 +52,4 @@ Since this is a static web application, no complex build tools or servers are re
 ## 👥 Team
 **Team Name:** Team AgriConnect
 *   **Shreesha S. Prabhu** - Full-Stack & UI/UX 
-*   **[Teammate Name]** - Research & Presentation
+*   **Eureka** - Research & Presentation
