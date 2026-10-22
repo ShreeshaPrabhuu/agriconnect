@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriConnect — Coastal Karnataka Rural Workforce & Direct Market Platform</title>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            },
+            amber: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome 6 Icons via CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#f4f7f4] text-slate-800 min-h-screen flex flex-col antialiased pb-20 md:pb-0">
+
+  <!-- ========================================== -->
+  <!-- MODULE 1: TOP NAVIGATION & ACCESSIBILITY BAR -->
+  <!-- ========================================== -->
+  <header class="sticky top-0 z-40 bg-emerald-900 text-white shadow-lg border-b border-emerald-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand / Logo -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('workforce')">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-400 to-emerald-500 flex items-center justify-center shadow-md border border-amber-300/40">
+            <i class="fa-solid fa-wheat-awn text-emerald-950 text-2xl"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="text-2xl font-black tracking-tight text-white">Agri<span class="text-amber-400">Connect</span></span>
+              <span id="header-tier-badge" class="px-2 py-0.5 text-xs font-bold rounded-full bg-emerald-800 text-amber-300 border border-amber-400/30">
+                🌾 Gram Basic
+              </span>
+            </div>
+            <p class="text-xs text-emerald-200 font-medium flex items-center gap-1">
+              <i class="fa-solid fa-map-pin text-amber-400"></i>
+              <span data-i18n="coastalKarnataka">Coastal Karnataka (DK & Udupi)</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Center Controls: Geolocation Selector & Voice Assistant -->
+        <div class="hidden md:flex items-center space-x-4">
+          
+          <!-- Location-by-Location Selector -->
+          <div class="relative bg-emerald-800/80 rounded-xl p-1.5 border border-emerald-700/60 shadow-inner flex items-center">
+            <div class="pl-2 pr-1 text-amber-400">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div class="text-left">
+              <label for="location-select" class="block text-[10px] text-emerald-300 font-bold uppercase tracking-wider leading-none" data-i18n="activeLocationLabel">
+                Gram Panchayat / Taluk
+              </label>
+              <select id="location-select" class="bg-transparent text-sm font-semibold text-white focus:outline-none cursor-pointer pr-4 py-0.5">
+                <option value="Beltangady / Kuvettu" class="bg-emerald-900 text-white">Beltangady / Kuvettu (ಬೆಳ್ತಂಗಡಿ)</option>
+                <option value="Puttur Taluk" class="bg-emerald-900 text-white">Puttur Taluk (ಪುತ್ತೂರು)</option>
+                <option value="Udupi Rural" class="bg-emerald-900 text-white">Udupi Rural (ಉಡುಪಿ ಗ್ರಾಮಾಂತರ)</option>
+                <option value="Karkala" class="bg-emerald-900 text-white">Karkala (ಕಾರ್ಕಳ)</option>
+                <option value="Mangaluru Outskirts" class="bg-emerald-900 text-white">Mangaluru Outskirts (ಮಂಗಳೂರು)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Interactive Voice Search Assistant Button -->
+          <button id="voice-assistant-btn" class="relative group flex items-center space-x-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-emerald-950 font-bold px-4 py-2.5 rounded-xl shadow-md transition-all duration-200 voice-pulse" title="Voice Search Assistant">
+            <i class="fa-solid fa-microphone text-base"></i>
+            <span class="text-sm font-extrabold hidden lg:inline" data-i18n="voiceSearchBtn">Voice Assistant</span>
+            <span class="inline-flex items-center px-1.5 py-0.2 text-[10px] bg-emerald-950 text-amber-300 font-bold rounded">AI</span>
+          </button>
+        </div>
+
+        <!-- Right Controls: Multilingual Toggle, Notifications, Profile & Role Switch -->
+        <div class="flex items-center space-x-2.5">
+          
+          <!-- Live Multilingual Switcher (EN / ಕನ್ನಡ / हिंदी) -->
+          <div class="flex items-center bg-emerald-950/60 p-1 rounded-xl border border-emerald-700/50">
+            <button class="lang-btn px-2.5 py-1 text-xs font-bold rounded-lg transition-colors bg-amber-400 text-emerald-950 shadow-sm" data-lang="en">EN</button>
+            <button class="lang-btn px-2.5 py-1 text-xs font-bold rounded-lg transition-colors text-emerald-200 hover:text-white" data-lang="kn">ಕನ್ನಡ</button>
+            <button class="lang-btn px-2.5 py-1 text-xs font-bold rounded-lg transition-colors text-emerald-200 hover:text-white" data-lang="hi">हिंदी</button>
+          </div>
+
+          <!-- Notification Bell Button -->
+          <button id="notif-bell-btn" onclick="openModal('notifications-modal')" class="relative p-2 rounded-xl bg-emerald-800/80 hover:bg-emerald-700 text-white border border-emerald-700/60 transition shadow-inner flex items-center justify-center" title="Notifications & Local Area Alerts">
+            <i class="fa-solid fa-bell text-sm sm:text-base"></i>
+            <span id="notif-badge-count" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white font-extrabold text-[10px] rounded-full flex items-center justify-center shadow-md border-2 border-emerald-900 notif-badge-pulse">
+              2
+            </span>
+          </button>
+
+          <!-- 1-Tap Role Quick Switcher Pill (Desktop) -->
+          <button id="header-role-switch-btn" onclick="toggleUserRole()" class="hidden xl:inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-extrabold bg-amber-400 hover:bg-amber-300 text-emerald-950 transition shadow-md border border-amber-300">
+            <i id="header-role-switch-icon" class="fa-solid fa-repeat"></i>
+            <span id="header-role-switch-text" data-i18n="switchToLabourer">Switch to 👷 Labourer</span>
+          </button>
+
+          <!-- User Profile & Role Pill Button (Desktop & Tablet) -->
+          <button id="header-profile-btn" onclick="openModal('profile-modal')" class="flex items-center space-x-2 bg-emerald-800/90 hover:bg-emerald-700 text-white p-1 sm:pr-3 rounded-xl border border-emerald-700/80 transition shadow-sm">
+            <div id="header-avatar-circle" class="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-400 to-emerald-400 text-emerald-950 font-black text-xs flex items-center justify-center shadow-inner">
+              MB
+            </div>
+            <div class="hidden sm:block text-left leading-tight">
+              <span id="header-user-name" class="block text-xs font-bold text-white truncate max-w-[110px]">Mahalinga Bhat</span>
+              <span id="header-user-role-badge" class="block text-[10px] text-amber-300 font-semibold">👨‍🌾 Farmer</span>
+            </div>
+          </button>
+
+          <!-- Quick Action: Register Worker or Produce -->
+          <button onclick="openModal('worker-reg-modal')" class="hidden 2xl:inline-flex items-center space-x-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold px-3 py-2 rounded-lg border border-emerald-500/40 transition">
+            <i class="fa-solid fa-user-plus text-amber-300"></i>
+            <span data-i18n="registerCrewNav">+ Register Crew</span>
+          </button>
+
+          <!-- Mobile Hamburger -->
+          <button id="mobile-menu-btn" class="md:hidden text-white hover:text-amber-300 p-2 text-xl focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Location, Voice & Notification Row (visible on small screens) -->
+      <div class="md:hidden pb-3 pt-1 flex flex-col gap-2">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex-1 bg-emerald-800/80 rounded-lg p-1.5 border border-emerald-700">
+            <div class="text-[10px] text-emerald-300 font-bold uppercase" data-i18n="activeLocationLabel">Active Panchayat / Taluk</div>
+            <select id="location-select-mobile" class="w-full bg-transparent text-sm font-semibold text-white focus:outline-none">
+              <option value="Beltangady / Kuvettu" class="bg-emerald-900 text-white">Beltangady / Kuvettu (ಬೆಳ್ತಂಗಡಿ)</option>
+              <option value="Puttur Taluk" class="bg-emerald-900 text-white">Puttur Taluk (ಪುತ್ತೂರು)</option>
+              <option value="Udupi Rural" class="bg-emerald-900 text-white">Udupi Rural (ಉಡುಪಿ)</option>
+              <option value="Karkala" class="bg-emerald-900 text-white">Karkala (ಕಾರ್ಕಳ)</option>
+              <option value="Mangaluru Outskirts" class="bg-emerald-900 text-white">Mangaluru Outskirts (ಮಂಗಳೂರು)</option>
+            </select>
+          </div>
+          <button id="voice-assistant-mobile-btn" class="bg-amber-400 text-emerald-950 p-2.5 rounded-lg font-bold flex items-center justify-center voice-pulse">
+            <i class="fa-solid fa-microphone text-lg"></i>
+          </button>
+          <button onclick="openModal('notifications-modal')" class="relative bg-emerald-800 text-white p-2.5 rounded-lg border border-emerald-700 flex items-center justify-center">
+            <i class="fa-solid fa-bell text-lg"></i>
+            <span id="mobile-header-notif-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white font-black text-[9px] rounded-full flex items-center justify-center">2</span>
+          </button>
+          <button onclick="openModal('profile-modal')" class="w-10 h-10 rounded-lg bg-gradient-to-tr from-amber-400 to-emerald-400 text-emerald-950 font-black text-xs flex items-center justify-center border border-amber-300/60 shadow-sm">
+            <span id="mobile-header-avatar">MB</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Drawer Dropdown -->
+      <div id="mobile-nav-drawer" class="md:hidden hidden pb-4 pt-2 border-t border-emerald-800/80 space-y-2">
+        <div class="bg-emerald-950/80 p-2.5 rounded-xl border border-emerald-700 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <div id="drawer-avatar" class="w-8 h-8 rounded-full bg-amber-400 text-emerald-950 font-black text-xs flex items-center justify-center">MB</div>
+            <div>
+              <span id="drawer-user-name" class="block text-xs font-bold text-white">Mahalinga Bhat</span>
+              <span id="drawer-user-role" class="block text-[10px] text-amber-300">👨‍🌾 Farmer</span>
+            </div>
+          </div>
+          <button onclick="toggleUserRole(); toggleMobileMenu()" class="px-2.5 py-1 rounded-lg bg-amber-400 text-emerald-950 text-xs font-bold">
+            <span id="drawer-role-switch-text">Switch to 👷 Labourer</span>
+          </button>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+          <button onclick="switchTab('workforce'); toggleMobileMenu()" class="p-2.5 rounded-xl bg-emerald-800 text-white text-left flex items-center gap-2">
+            <i class="fa-solid fa-people-group text-amber-400"></i>
+            <span data-i18n="tabWorkforce">Rural Workforce</span>
+          </button>
+          <button onclick="switchTab('market'); toggleMobileMenu()" class="p-2.5 rounded-xl bg-emerald-800 text-white text-left flex items-center gap-2">
+            <i class="fa-solid fa-chart-line text-amber-400"></i>
+            <span data-i18n="tabMarket">Direct Market</span>
+          </button>
+          <button onclick="switchTab('khata'); toggleMobileMenu()" class="p-2.5 rounded-xl bg-emerald-800 text-white text-left flex items-center gap-2">
+            <i class="fa-solid fa-book-bookmark text-amber-400"></i>
+            <span data-i18n="tabKhata">Wage Khata</span>
+          </button>
+          <button onclick="switchTab('pricing'); toggleMobileMenu()" class="p-2.5 rounded-xl bg-emerald-800 text-white text-left flex items-center gap-2">
+            <i class="fa-solid fa-crown text-amber-400"></i>
+            <span data-i18n="tabPricing">Membership</span>
+          </button>
+        </div>
+        <div class="pt-2 flex gap-2">
+          <button onclick="openModal('worker-reg-modal'); toggleMobileMenu()" class="flex-1 py-2 px-3 rounded-lg bg-emerald-700 text-white text-xs font-bold text-center border border-emerald-500/40">
+            + Register Crew
+          </button>
+          <button onclick="openModal('list-produce-modal'); toggleMobileMenu()" class="flex-1 py-2 px-3 rounded-lg bg-amber-400 text-emerald-950 text-xs font-bold text-center">
+            + List Harvest
+          </button>
+          <button onclick="openModal('login-modal'); toggleMobileMenu()" class="py-2 px-3 rounded-lg bg-slate-800 text-emerald-200 text-xs font-bold text-center border border-emerald-700">
+            <i class="fa-solid fa-right-to-bracket mr-1"></i>Login
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VOICE ASSISTANT BANNER (Live Listening & Dialect Transcript) -->
+    <div id="voice-listening-banner" class="hidden bg-emerald-950 border-t border-b border-amber-400/40 px-4 py-3 text-white transition-all duration-300">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center space-x-3 w-full sm:w-auto">
+          <div class="flex items-center space-x-1 px-3 py-1.5 bg-emerald-900 rounded-lg border border-emerald-700">
+            <span class="w-1.5 bg-amber-400 rounded-full wave-bar inline-block"></span>
+            <span class="w-1.5 bg-amber-400 rounded-full wave-bar inline-block"></span>
+            <span class="w-1.5 bg-amber-400 rounded-full wave-bar inline-block"></span>
+            <span class="w-1.5 bg-amber-400 rounded-full wave-bar inline-block"></span>
+            <span class="w-1.5 bg-amber-400 rounded-full wave-bar inline-block"></span>
+          </div>
+          <div class="text-left">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-400" data-i18n="voiceListeningTitle">🎙️ Voice Assistant Listening (Coastal Dialect Ready)</span>
+              <span id="voice-status-pill" class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30">Active</span>
+            </div>
+            <p id="voice-transcript-text" class="text-sm font-medium text-emerald-100 italic mt-0.5">
+              "Need an Arecanut harvesting crew near Beltangady..."
+            </p>
+          </div>
+        </div>
+
+        <!-- Sample Voice Prompt Chips -->
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <span class="text-xs text-emerald-300" data-i18n="trySaying">Try saying:</span>
+          <button class="voice-chip px-2.5 py-1 text-xs rounded-full bg-emerald-800 hover:bg-emerald-700 text-amber-200 border border-emerald-600 transition" onclick="triggerVoiceQuery('arecanut')">
+            🌴 Arecanut Harvesting Crew
+          </button>
+          <button class="voice-chip px-2.5 py-1 text-xs rounded-full bg-emerald-800 hover:bg-emerald-700 text-amber-200 border border-emerald-600 transition" onclick="triggerVoiceQuery('weeding')">
+            🌾 Weeding & Grass Clearing
+          </button>
+          <button class="voice-chip px-2.5 py-1 text-xs rounded-full bg-emerald-800 hover:bg-emerald-700 text-amber-200 border border-emerald-600 transition" onclick="triggerVoiceQuery('mechanic')">
+            🔧 Pump & Motor Mechanic
+          </button>
+          <button onclick="closeVoiceBanner()" class="text-slate-400 hover:text-white p-1 text-sm ml-2">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN TAB NAVIGATION BAR -->
+    <div class="bg-emerald-950/90 border-t border-emerald-800/80 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto flex items-center justify-between overflow-x-auto no-scrollbar py-2">
+        <nav class="flex space-x-2 sm:space-x-4">
+          
+          <!-- TAB 1: Rural Workforce & Crews -->
+          <button onclick="switchTab('workforce')" id="nav-tab-workforce" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 transition-all bg-emerald-700 text-white shadow-sm border border-emerald-500/40">
+            <i class="fa-solid fa-people-group text-amber-400"></i>
+            <span data-i18n="tabWorkforce">Rural Workforce & Crews</span>
+            <span id="crew-count-pill" class="text-xs px-2 py-0.5 rounded-full bg-emerald-900 text-amber-300 ml-1">12</span>
+          </button>
+
+          <!-- TAB 2: Direct Market & Mandi (PS 1.2) -->
+          <button onclick="switchTab('market')" id="nav-tab-market" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 transition-all text-emerald-200 hover:text-white hover:bg-emerald-850">
+            <i class="fa-solid fa-chart-line text-amber-400"></i>
+            <span data-i18n="tabMarket">Direct Market & Mandi</span>
+            <span class="text-[10px] font-black uppercase px-1.5 py-0.5 bg-amber-400 text-emerald-950 rounded">PS 1.2</span>
+          </button>
+
+          <!-- TAB 3: Daily Wage Khata -->
+          <button onclick="switchTab('khata')" id="nav-tab-khata" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 transition-all text-emerald-200 hover:text-white hover:bg-emerald-850">
+            <i class="fa-solid fa-book-bookmark text-amber-400"></i>
+            <span data-i18n="tabKhata">Daily Wage Khata</span>
+            <span id="pending-khata-badge" class="hidden text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-white">0</span>
+          </button>
+
+          <!-- TAB 4: Membership Plans -->
+          <button onclick="switchTab('pricing')" id="nav-tab-pricing" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 transition-all text-emerald-200 hover:text-white hover:bg-emerald-850">
+            <i class="fa-solid fa-crown text-amber-400"></i>
+            <span data-i18n="tabPricing">Membership Tiers</span>
+          </button>
+        </nav>
+
+        <div class="hidden lg:flex items-center text-xs text-emerald-300 font-medium">
+          <span class="flex items-center gap-1.5 mr-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span data-i18n="liveMandiSync">Live CAMPCO & APMC Sync</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- MAIN CONTAINER WITH DYNAMIC TABS -->
+  <!-- ========================================== -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ======================================================= -->
+    <!-- TAB 1: HYPER-LOCAL LABOR & GROUP CREW FINDER (MODULE 2) -->
+    <!-- ======================================================= -->
+    <div id="tab-content-workforce" class="tab-pane block">
+      
+      <!-- LABOURER / CREW LEADER WORK HUB BANNER (Dynamic Role-based) -->
+      <div id="labourer-work-hub" class="hidden bg-gradient-to-r from-amber-500 via-amber-600 to-emerald-900 rounded-2xl p-4 sm:p-5 text-emerald-950 mb-6 shadow-lg border-2 border-amber-300">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div class="flex items-center space-x-3.5">
+            <div id="hub-avatar" class="w-12 h-12 rounded-2xl bg-emerald-950 text-amber-400 font-black text-base flex items-center justify-center shadow-md border border-amber-300">
+              AG
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-black uppercase px-2 py-0.5 rounded bg-emerald-950 text-amber-300" data-i18n="labourDashboardTitle">👷 Labourer & Crew Leader Mode</span>
+                <span id="hub-panchayat-pill" class="text-xs font-bold text-white/90">📍 Beltangady / Kuvettu</span>
+              </div>
+              <h2 id="hub-worker-title" class="text-lg sm:text-xl font-black text-white mt-0.5">Anand Gowda Mukkadam Crew (8 members)</h2>
+              <p class="text-xs text-amber-100 font-medium" data-i18n="labourHubDesc">You are in Crew Leader view. Direct booking inquiries from farmers in your Taluk appear here.</p>
+            </div>
+          </div>
+
+          <!-- Live Status Selector & Wage Rate -->
+          <div class="flex flex-wrap items-center gap-3 bg-emerald-950/80 p-3 rounded-2xl border border-amber-400/30 text-white">
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-amber-300 mb-1" data-i18n="myAvailability">My Work Availability:</label>
+              <div class="flex items-center gap-1.5 text-xs font-bold">
+                <button type="button" onclick="setLabourerAvailability('available')" id="status-btn-available" class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white shadow-sm transition">
+                  🟢 Available Today
+                </button>
+                <button type="button" onclick="setLabourerAvailability('partial')" id="status-btn-partial" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">
+                  🟡 Booked
+                </button>
+                <button type="button" onclick="setLabourerAvailability('busy')" id="status-btn-busy" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">
+                  🔴 Busy
+                </button>
+              </div>
+            </div>
+
+            <div class="border-l border-emerald-800 pl-3">
+              <span class="block text-[10px] font-bold uppercase tracking-wider text-emerald-300" data-i18n="myDailyWage">Daily Rate</span>
+              <div class="flex items-center gap-1 text-sm font-black text-amber-400">
+                <span id="hub-daily-rate">₹3,600</span>
+                <button onclick="openModal('profile-modal')" class="text-xs text-white/80 hover:text-white ml-1 p-1" title="Edit Wage"><i class="fa-solid fa-pen-to-square"></i></button>
+              </div>
+            </div>
+
+            <button onclick="toggleUserRole()" class="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 text-xs font-extrabold transition shadow-sm ml-auto">
+              Switch to 👨‍🌾 Farmer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO & SMART RANK SUMMARY BANNER -->
+      <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-950 rounded-2xl text-white p-5 sm:p-6 mb-6 shadow-md border border-emerald-700/60 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none text-9xl">
+          <i class="fa-solid fa-tractor"></i>
+        </div>
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-400 text-emerald-950" data-i18n="heroBadge">
+                🌾 Coastal Karnataka Workforce Hub
+              </span>
+              <span class="text-xs text-emerald-300 font-semibold" data-i18n="heroSubtext">
+                Connecting 15,000+ Smallholders with Verified Local Labor
+              </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight" data-i18n="workforceHeading">
+              Hyper-Local Labor & Group Crew Finder
+            </h1>
+            <p class="text-sm text-emerald-100 max-w-2xl mt-1" data-i18n="workforceDesc">
+              Discover reliable agricultural harvesters, Mukkadam group crews (4–10 members), and off-season rural tradesmen in Dakshina Kannada & Udupi with real-time GPS proximity and dynamic reputation ranking.
+            </p>
+          </div>
+
+          <!-- Formula Explainer Pill -->
+          <div class="bg-emerald-950/80 rounded-xl p-3 border border-emerald-600/40 text-xs shadow-inner flex flex-col gap-1 min-w-[260px]">
+            <div class="font-bold text-amber-300 flex items-center justify-between">
+              <span data-i18n="smartRankFormula">⚡ Dynamic Smart Rank Score</span>
+              <span class="text-[10px] bg-emerald-800 text-emerald-200 px-1.5 py-0.5 rounded">100 Max</span>
+            </div>
+            <div class="text-[11px] text-emerald-200 font-mono">
+              Score = (Rating × 50%) + (Proximity × 30%) + (Completion × 20%)
+            </div>
+            <div class="flex items-center justify-between text-[10px] text-emerald-300 pt-1 border-t border-emerald-800/60">
+              <span>🏆 Top Match Placement</span>
+              <span class="text-amber-300 font-bold">🚀 Newcomer Starter 88/100</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER CONTROLS BAR -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5 mb-6">
+        
+        <!-- ROW 1: Search & Dual Hiring Mode Toggle -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center pb-4 border-b border-slate-100">
+          
+          <!-- Search input -->
+          <div class="md:col-span-5 relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <input type="text" id="worker-search-input" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition" placeholder="Search by crew name, leader, skill, or village...">
+          </div>
+
+          <!-- Dual Hiring Mode Segmented Toggle (All vs Group Crews vs Single) -->
+          <div class="md:col-span-7 flex flex-wrap items-center justify-between sm:justify-end gap-2">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider" data-i18n="hiringModeLabel">Hiring Mode:</span>
+            <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold">
+              <button class="crew-mode-btn px-3 py-1.5 rounded-lg transition bg-white text-emerald-900 shadow-sm" data-mode="all" data-i18n="modeAll">
+                All
+              </button>
+              <button class="crew-mode-btn px-3 py-1.5 rounded-lg transition text-slate-600 hover:text-emerald-900" data-mode="crew" data-i18n="modeCrew">
+                👥 Group Crews (Mukkadams, 4–10)
+              </button>
+              <button class="crew-mode-btn px-3 py-1.5 rounded-lg transition text-slate-600 hover:text-emerald-900" data-mode="single" data-i18n="modeSingle">
+                👤 Single Workers
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROW 2: 365-Day Task & Skill Filter (Farm + Off-Season) -->
+        <div class="py-3 border-b border-slate-100">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-sliders text-emerald-700"></i>
+              <span data-i18n="taskSkillLabel">Task & Skill Filter (365-Day Utility)</span>
+            </label>
+            <span class="text-xs text-slate-400 font-medium" data-i18n="taskSkillSub">Farm Harvest & Off-Season Rural Trades</span>
+          </div>
+          
+          <div class="flex flex-wrap gap-2" id="skill-filter-container">
+            <button class="skill-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-emerald-700 text-white shadow-sm" data-skill="all" data-i18n="skillAll">
+              🌾 All Rural Services (Farm + Off-Season)
+            </button>
+            <button class="skill-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-skill="arecanut" data-i18n="skillArecanut">
+              🌴 Arecanut & Coconut Harvesting
+            </button>
+            <button class="skill-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-skill="weeding" data-i18n="skillWeeding">
+              🌿 Weeding & Grass Clearing
+            </button>
+            <button class="skill-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-skill="paddy" data-i18n="skillPaddy">
+              🌾 Paddy & Crop Harvesting
+            </button>
+            <button class="skill-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-skill="mechanic" data-i18n="skillMechanic">
+              🔧 Off-Season: Pump & Motor Mechanic
+            </button>
+            <button class="skill-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-slate-100 text-slate-700 hover:bg-slate-200" data-skill="masonry" data-i18n="skillMasonry">
+              🧱 Off-Season: Rural Masonry & Fencing
+            </button>
+          </div>
+        </div>
+
+        <!-- ROW 3: GPS Radius Scanner Slider & Sorting Controls -->
+        <div class="pt-3 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          
+          <!-- GPS Radius Scanner -->
+          <div class="flex-1 max-w-xl">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-700 mb-1.5">
+              <span class="flex items-center gap-1.5">
+                <i class="fa-solid fa-radar text-emerald-700"></i>
+                <span data-i18n="gpsRadiusLabel">GPS Radius Scanner:</span>
+                <span id="radius-val-display" class="text-emerald-800 font-extrabold text-sm ml-1">15 km (Taluk Wide)</span>
+              </span>
+              <span id="radius-tier-indicator" class="text-[11px] text-slate-500 font-medium">
+                Standard Range (3–30 km)
+              </span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-semibold text-slate-500">3 km (Village)</span>
+              <input type="range" id="radius-slider" min="3" max="30" value="15" step="1" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+              <span class="text-xs font-semibold text-slate-500">30 km (Taluk)</span>
+            </div>
+          </div>
+
+          <!-- Sort Order Dropdown & Results Counter -->
+          <div class="flex items-center justify-between lg:justify-end gap-3">
+            <div class="flex items-center space-x-2 text-xs">
+              <span class="text-slate-500 font-bold" data-i18n="sortByLabel">Sort By:</span>
+              <select id="worker-sort-select" class="bg-slate-50 border border-slate-200 text-slate-800 text-xs font-semibold rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-emerald-700">
+                <option value="smart_rank" selected>⚡ Smart Rank (Top vs Bottom)</option>
+                <option value="distance_asc">📍 Nearest Distance</option>
+                <option value="rating_desc">⭐ Highest Rating</option>
+                <option value="wage_asc">💰 Daily Wage (Low to High)</option>
+              </select>
+            </div>
+
+            <!-- Register Crew Button Trigger -->
+            <button onclick="openModal('worker-reg-modal')" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm">
+              <i class="fa-solid fa-plus"></i>
+              <span data-i18n="addWorkerBtn">Register Crew / Worker</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ACTIVE FILTER STATUS PILL & QUICK METRICS -->
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-slate-600" data-i18n="showingResults">Showing:</span>
+          <span id="results-count-badge" class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 font-extrabold border border-emerald-200">
+            12 Verified Crews & Workers
+          </span>
+          <span id="current-location-pill" class="text-slate-500">
+            near <strong>Beltangady / Kuvettu</strong>
+          </span>
+        </div>
+        <div class="flex items-center gap-3 text-slate-500">
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Available Today</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Booked Tomorrow</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-400"></span> Busy</span>
+        </div>
+      </div>
+
+      <!-- WORKER & GROUP CREW CARDS GRID -->
+      <div id="workers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div id="workers-empty-state" class="hidden text-center py-12 bg-white rounded-2xl border border-slate-200 p-8">
+        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center text-2xl">
+          <i class="fa-solid fa-person-shelter"></i>
+        </div>
+        <h3 class="text-base font-bold text-slate-800" data-i18n="noWorkersFound">No laborers or crews match your current radius or skill filter</h3>
+        <p class="text-xs text-slate-500 max-w-md mx-auto mt-1" data-i18n="noWorkersHint">Try increasing the GPS radius scanner to 25–30 km or clearing specific skill filters.</p>
+        <button onclick="resetWorkerFilters()" class="mt-4 px-4 py-2 bg-emerald-700 text-white text-xs font-bold rounded-xl hover:bg-emerald-800 transition">
+          Reset All Filters
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- TAB 2: DIRECT MARKET-ACCESS & MANDI DISCOVERY (MODULE 3) -->
+    <!-- ======================================================= -->
+    <div id="tab-content-market" class="tab-pane hidden">
+      
+      <!-- HERO & HACKATHON PS 1.2 CALLOUT -->
+      <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-850 rounded-2xl text-white p-5 sm:p-6 mb-6 shadow-md border border-emerald-700/60 relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2.5 py-0.5 text-xs font-extrabold rounded-lg bg-amber-400 text-emerald-950">
+                Hackathon PS 1.2
+              </span>
+              <span class="text-xs text-emerald-300 font-semibold" data-i18n="marketEliminateMiddleman">
+                Eliminating Middleman Margin Loss in Coastal Karnataka
+              </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight" data-i18n="marketHeading">
+              Direct Market-Access & Coastal Mandi Price Discovery
+            </h1>
+            <p class="text-sm text-emerald-100 max-w-2xl mt-1" data-i18n="marketDesc">
+              Connecting marginal farmers in Dakshina Kannada & Udupi directly to certified food processing units, spice exporters, and bulk buyers with transparent, near-real-time Mandi price benchmarks.
+            </p>
+          </div>
+
+          <!-- List Produce CTA Button -->
+          <div class="flex flex-col sm:flex-row items-center gap-3">
+            <button onclick="openModal('list-produce-modal')" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold px-4 py-2.5 rounded-xl shadow-md transition text-sm flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-plus-circle"></i>
+              <span data-i18n="listHarvestDirectBtn">List My Harvest Directly</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 1: LIVE COASTAL KARNATAKA MANDI COMPARISON CARDS (4 Highlight Cards) -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-lg font-extrabold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-scale-balanced text-emerald-700"></i>
+              <span data-i18n="liveMandiCardsTitle">Coastal Mandi Price Comparison & Margin Gain</span>
+            </h2>
+            <p class="text-xs text-slate-500" data-i18n="liveMandiCardsSubtitle">
+              Benchmark APMC / CAMPCO / Broker rate vs Direct Buyer rate in Dakshina Kannada & Udupi
+            </p>
+          </div>
+          <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span>
+            <span data-i18n="liveUpdatedToday">Updated Today 09:30 AM IST</span>
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="mandi-comparison-grid">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+      </div>
+
+      <!-- INTERACTIVE MARGIN CALCULATOR BANNER -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 mb-8 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="max-w-md">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-calculator text-amber-500"></i>
+              <span data-i18n="marginCalcTitle">Farmer Direct Profit Simulator</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5" data-i18n="marginCalcDesc">
+              See how much extra income you keep by cutting out the middleman commission.
+            </p>
+          </div>
+
+          <div class="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-1" data-i18n="calcCropSelect">Select Crop</label>
+              <select id="calc-crop-select" class="w-full text-xs font-semibold p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-600">
+                <option value="arecanut">Red Arecanut (Chali) - ₹30/kg gain</option>
+                <option value="pepper">Black Pepper - ₹38/kg gain</option>
+                <option value="coconut">Copra Coconut - ₹13/kg gain</option>
+                <option value="banana">Nendran Banana - ₹5/kg gain</option>
+              </select>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[11px] font-bold text-slate-600 mb-1">
+                <span data-i18n="calcQuantity">Harvest Batch Size</span>
+                <span id="calc-qty-label" class="text-emerald-700">500 kg</span>
+              </div>
+              <input type="range" id="calc-qty-slider" min="100" max="2500" value="500" step="50" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+            </div>
+
+            <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 text-center">
+              <span class="block text-[10px] font-bold text-emerald-800 uppercase tracking-wider" data-i18n="calcExtraProfit">Extra Net Farmer Gain</span>
+              <span id="calc-extra-gain" class="text-lg font-black text-emerald-900">+₹15,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: FARMER-TO-BUYER PRODUCE MARKETPLACE GRID -->
+      <div>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <h2 class="text-lg font-extrabold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-store text-emerald-700"></i>
+              <span data-i18n="activeLotsTitle">Active Farmer Harvest Lots (Dakshina Kannada & Udupi)</span>
+            </h2>
+            <p class="text-xs text-slate-500" data-i18n="activeLotsSub">
+              Direct procurement from marginal farmers with farm-gate pickup & escrow protection
+            </p>
+          </div>
+
+          <!-- Crop Filter Pills -->
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+            <button class="produce-filter-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-700 text-white" data-crop="all">All Lots</button>
+            <button class="produce-filter-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200" data-crop="arecanut">Arecanut</button>
+            <button class="produce-filter-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200" data-crop="pepper">Black Pepper</button>
+            <button class="produce-filter-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200" data-crop="coconut">Coconut</button>
+            <button class="produce-filter-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200" data-crop="banana">Banana</button>
+          </div>
+        </div>
+
+        <!-- Produce Marketplace Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="produce-lots-grid">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- TAB 3: HYBRID DAILY WAGE KHATA / LEDGER (MODULE 4)      -->
+    <!-- ======================================================= -->
+    <div id="tab-content-khata" class="tab-pane hidden">
+      
+      <!-- HERO & OVERVIEW -->
+      <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-slate-900 rounded-2xl text-white p-5 sm:p-6 mb-6 shadow-md border border-emerald-700/60">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2.5 py-0.5 text-xs font-extrabold rounded-lg bg-amber-400 text-emerald-950" data-i18n="khataBadge">
+                Digital Pocket Diary
+              </span>
+              <span class="text-xs text-emerald-300 font-semibold" data-i18n="khataSubtext">
+                Zero-Dispute Transparent Farm Bookkeeping
+              </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight" data-i18n="khataHeading">
+              Hybrid Daily Wage Khata / Ledger
+            </h1>
+            <p class="text-sm text-emerald-100 max-w-2xl mt-1" data-i18n="khataDesc">
+              Track crew labor attendance, cash handovers, and UPI escrow settlements with automatic balance reconciliation for Coastal Karnataka smallholders.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="exportKhataCSV()" class="bg-emerald-800 hover:bg-emerald-700 text-white border border-emerald-600 text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-sm">
+              <i class="fa-solid fa-file-arrow-down text-amber-300"></i>
+              <span data-i18n="exportKhataBtn">Export CSV</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 1: SUMMARY KPI CARDS -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        
+        <!-- Total Settled KPI -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider" data-i18n="totalSettledLabel">Total Settled (Paid)</span>
+            <div id="kpi-total-settled" class="text-2xl sm:text-3xl font-black text-emerald-700 mt-1">₹0</div>
+            <span class="text-[11px] text-emerald-600 font-medium flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-circle-check"></i>
+              <span data-i18n="settledVerified">Field Cash & UPI Verified</span>
+            </span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+          </div>
+        </div>
+
+        <!-- Pending Balance KPI -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider" data-i18n="pendingBalanceLabel">Pending Balance (Owed)</span>
+            <div id="kpi-pending-balance" class="text-2xl sm:text-3xl font-black text-amber-600 mt-1">₹0</div>
+            <span class="text-[11px] text-amber-700 font-medium flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-clock"></i>
+              <span data-i18n="pendingDue">Due to be cleared post-work</span>
+            </span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-hourglass-half"></i>
+          </div>
+        </div>
+
+        <!-- Total Work Entries -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider" data-i18n="totalEntriesLabel">Total Entries Logged</span>
+            <div id="kpi-total-entries" class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">0</div>
+            <span class="text-[11px] text-slate-500 font-medium flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-receipt"></i>
+              <span data-i18n="entriesCountDesc">Days of harvest & trades</span>
+            </span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-clipboard-list"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SECTION 2: ADD WAGE ENTRY FORM -->
+      <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm mb-6">
+        <h3 class="text-sm font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
+          <i class="fa-solid fa-pen-to-square text-emerald-700"></i>
+          <span data-i18n="addWageTitle">Add Daily Wage Entry (ಹೊಸ ವೇತನ ನಮೂದು ಸೇರಿಸಿ)</span>
+        </h3>
+
+        <form id="khata-add-form" onsubmit="handleKhataSubmit(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+          
+          <!-- Worker / Crew Name -->
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="khataWorkerName">Worker / Crew Name</label>
+            <input type="text" id="khata-worker-input" required placeholder="e.g. Anand Gowda Crew" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+          </div>
+
+          <!-- Task Completed -->
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="khataTask">Task Completed</label>
+            <select id="khata-task-select" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+              <option value="Arecanut Climbing & Plucking">Arecanut Climbing & Plucking (ಅಡಿಕೆ ಕೊಯ್ಲು)</option>
+              <option value="Coconut Harvesting">Coconut Harvesting (ತೆಂಗು ಕೊಯ್ಲು)</option>
+              <option value="Weeding & Brush Cutting">Weeding & Brush Cutting (ಕಳೆ ತೆಗೆಯುವುದು)</option>
+              <option value="Bordeaux Mixture Spraying">Bordeaux Spraying (ಮದ್ದು ಸಿಂಪಡಣೆ)</option>
+              <option value="Pump & Motor Repair">Pump & Motor Repair (ಪಂಪ್ ದುರಸ್ತಿ)</option>
+              <option value="Rural Masonry & Wall Fencing">Rural Masonry & Fencing (ಬೇಲಿ ನಿರ್ಮಾಣ)</option>
+              <option value="Paddy Harvesting">Paddy Harvesting (ಭತ್ತ ಕೊಯ್ಲು)</option>
+            </select>
+          </div>
+
+          <!-- Wage Amount (₹) -->
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="khataAmount">Wage Amount (₹)</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">₹</span>
+              <input type="number" id="khata-amount-input" required min="50" step="50" placeholder="850" class="w-full text-xs font-bold pl-7 pr-3 p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+            </div>
+          </div>
+
+          <!-- Payment Mode -->
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="khataPaymentMode">Payment Mode</label>
+            <select id="khata-mode-select" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+              <option value="Cash Handover">💵 Cash Handover (Settled)</option>
+              <option value="UPI Transfer">📱 UPI Transfer (Settled)</option>
+              <option value="Pending Balance">⏳ Pending Balance (Due)</option>
+            </select>
+          </div>
+
+          <!-- Submit Button -->
+          <div>
+            <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold p-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center space-x-1.5">
+              <i class="fa-solid fa-plus"></i>
+              <span data-i18n="khataLogBtn">Log Wage Entry</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- SECTION 3: INTERACTIVE KHATA TABLE -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        
+        <div class="p-4 sm:px-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-table-list text-emerald-700"></i>
+              <span data-i18n="khataTableTitle">Workforce Wage Ledger (ದೈನಂದಿನ ಖಾತೆ ವಿವರ)</span>
+            </h3>
+            <p class="text-xs text-slate-500" data-i18n="khataTableSub">Entries booked through directory automatically sync here</p>
+          </div>
+
+          <!-- Table Filter Tabs -->
+          <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-xl text-xs font-bold">
+            <button class="khata-filter-btn px-3 py-1 rounded-lg bg-white text-emerald-900 shadow-sm" data-filter="all">All</button>
+            <button class="khata-filter-btn px-3 py-1 rounded-lg text-slate-600 hover:text-emerald-900" data-filter="pending">⏳ Pending</button>
+            <button class="khata-filter-btn px-3 py-1 rounded-lg text-slate-600 hover:text-emerald-900" data-filter="settled">✅ Settled</button>
+          </div>
+        </div>
+
+        <!-- Responsive Table Wrapper -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-500 uppercase font-bold tracking-wider border-b border-slate-200 text-[11px]">
+              <tr>
+                <th class="py-3 px-4 sm:px-6">Date</th>
+                <th class="py-3 px-4 sm:px-6">Worker / Crew</th>
+                <th class="py-3 px-4 sm:px-6">Task Completed</th>
+                <th class="py-3 px-4 sm:px-6">Payment Mode</th>
+                <th class="py-3 px-4 sm:px-6 text-right">Wage Amount</th>
+                <th class="py-3 px-4 sm:px-6 text-center">Status</th>
+                <th class="py-3 px-4 sm:px-6 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="khata-table-body" class="divide-y divide-slate-100 font-medium text-slate-700">
+              <!-- Rendered dynamically by app.js -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- TAB 4: MEMBERSHIP & MONETIZATION TIERS (MODULE 5)       -->
+    <!-- ======================================================= -->
+    <div id="tab-content-pricing" class="tab-pane hidden">
+      
+      <!-- HERO -->
+      <div class="text-center max-w-3xl mx-auto mb-10 pt-4">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-extrabold uppercase tracking-wider mb-2">
+          <i class="fa-solid fa-crown text-amber-500"></i>
+          <span data-i18n="pricingBadge">Direct Value for Smallholders & Crews</span>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight" data-i18n="pricingHeading">
+          Transparent, Affordable Rural Subscriptions
+        </h1>
+        <p class="text-sm text-slate-600 mt-2" data-i18n="pricingSub">
+          Empowering marginal farmers in Dakshina Kannada & Udupi with priority labor access, extended GPS scanning, and zero middleman margins.
+        </p>
+      </div>
+
+      <!-- 3 PRICING CARDS GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-10 items-stretch">
+        
+        <!-- CARD 1: GRAM BASIC (₹0) -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between relative transition hover:shadow-md">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700">
+                Forever Free
+              </span>
+              <i class="fa-solid fa-seedling text-2xl text-emerald-600"></i>
+            </div>
+            
+            <h3 class="text-xl font-black text-slate-800" data-i18n="planBasicName">Gram Basic</h3>
+            <p class="text-xs text-slate-500 mt-1" data-i18n="planBasicSub">Essential tools for individual smallholder farmers.</p>
+
+            <div class="my-6">
+              <span class="text-3xl sm:text-4xl font-black text-slate-900">₹0</span>
+              <span class="text-xs text-slate-500 font-bold" data-i18n="planFreeDuration">/ forever</span>
+            </div>
+
+            <ul class="space-y-3 text-xs text-slate-600 font-medium border-t border-slate-100 pt-6">
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-check text-emerald-600"></i>
+                <span data-i18n="planBasicFeat1">10 km GPS Radius Worker Search</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-check text-emerald-600"></i>
+                <span data-i18n="planBasicFeat2">Multilingual UI (Kannada, English, Hindi)</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-check text-emerald-600"></i>
+                <span data-i18n="planBasicFeat3">Daily CAMPCO & APMC Mandi Price View</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-check text-emerald-600"></i>
+                <span data-i18n="planBasicFeat4">Standard Daily Wage Khata (up to 20 entries)</span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-400">
+                <i class="fa-solid fa-xmark"></i>
+                <span data-i18n="planBasicFeat5">Extended 30 km Taluk Radius</span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-400">
+                <i class="fa-solid fa-xmark"></i>
+                <span data-i18n="planBasicFeat6">Priority Top Match Crew Placement</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-8">
+            <button id="btn-tier-basic" onclick="selectTier('basic')" class="w-full py-3 px-4 rounded-xl text-xs font-bold border-2 border-slate-200 text-slate-700 hover:bg-slate-50 transition">
+              Current Plan
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 2: KRISHI & CREW PRO (₹49/mo) — MOST POPULAR -->
+        <div class="bg-gradient-to-b from-emerald-900 to-emerald-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl border-2 border-amber-400 flex flex-col justify-between relative transform lg:-translate-y-2">
+          
+          <!-- Highlight Badge -->
+          <div class="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-amber-400 text-emerald-950 text-[11px] font-black uppercase tracking-wider py-1 px-4 rounded-full shadow-md flex items-center gap-1.5">
+            <i class="fa-solid fa-star"></i>
+            <span data-i18n="mostPopularBadge">Most Popular in DK & Udupi</span>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-4 mt-1">
+              <span class="text-xs font-black uppercase px-2.5 py-1 rounded-lg bg-emerald-800 text-amber-300 border border-amber-400/40">
+                Best for Active Farms & Crews
+              </span>
+              <i class="fa-solid fa-crown text-2xl text-amber-400"></i>
+            </div>
+            
+            <h3 class="text-xl font-black text-white" data-i18n="planProName">Krishi & Crew Pro</h3>
+            <p class="text-xs text-emerald-200 mt-1" data-i18n="planProSub">Full Taluk-wide discovery & zero crop commission.</p>
+
+            <div class="my-6">
+              <span class="text-3xl sm:text-4xl font-black text-amber-400">₹299</span>
+              <span class="text-xs text-emerald-200 font-bold" data-i18n="planPerMonth">/ month</span>
+            </div>
+
+            <ul class="space-y-3 text-xs text-emerald-100 font-medium border-t border-emerald-800 pt-6">
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-circle-check text-amber-400"></i>
+                <strong class="text-white" data-i18n="planProFeat1">Priority #1 Top-Placement Badge for Crews</strong>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-circle-check text-amber-400"></i>
+                <strong class="text-white" data-i18n="planProFeat2">Extended 30 km Taluk-Wide GPS Radius</strong>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-circle-check text-amber-400"></i>
+                <span data-i18n="planProFeat3">Zero Commission on Direct Harvest Sales</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-circle-check text-amber-400"></i>
+                <span data-i18n="planProFeat4">Automated Voice & SMS Alerts in Kannada</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-circle-check text-amber-400"></i>
+                <span data-i18n="planProFeat5">₹50,000 Micro-Accident Insurance Cover</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-circle-check text-amber-400"></i>
+                <span data-i18n="planProFeat6">Unlimited Daily Wage Khata with PDF Export</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-8">
+            <button id="btn-tier-pro" onclick="selectTier('pro')" class="w-full py-3.5 px-4 rounded-xl text-sm font-extrabold bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-emerald-950 transition shadow-lg flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-bolt"></i>
+              <span data-i18n="activateProBtn">⭐ Activate Pro (₹299/mo)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 3: FPO & WHOLESALE PASS (₹299/mo) -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between relative transition hover:shadow-md">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-extrabold uppercase px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800">
+                Institutional
+              </span>
+              <i class="fa-solid fa-building-wheat text-2xl text-emerald-700"></i>
+            </div>
+            
+            <h3 class="text-xl font-black text-slate-800" data-i18n="planFpoName">FPO & Wholesale Pass</h3>
+            <p class="text-xs text-slate-500 mt-1" data-i18n="planFpoSub">For Farmer Producer Orgs, Exporters & Large Plantations.</p>
+
+            <div class="my-6">
+              <span class="text-3xl sm:text-4xl font-black text-slate-900">₹2999</span>
+              <span class="text-xs text-slate-500 font-bold" data-i18n="planPerMonth">/ month</span>
+            </div>
+
+            <ul class="space-y-3 text-xs text-slate-600 font-medium border-t border-slate-100 pt-6">
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-check text-emerald-600"></i>
+                <strong data-i18n="planFpoFeat1">Bulk Multi-Crew Seasonal Booking (5+ crews)</strong>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-check text-emerald-600"></i>
+                <strong data-i18n="planFpoFeat2">Direct Wholesale Bidding on Harvest Lots</strong>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-check text-emerald-600"></i>
+                <span data-i18n="planFpoFeat3">Downloadable PDF Wage & GST Statements</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-check text-emerald-600"></i>
+                <span data-i18n="planFpoFeat4">Dedicated Agri-Officer Desk in DK & Udupi</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <i class="fa-solid fa-check text-emerald-600"></i>
+                <span data-i18n="planFpoFeat5">Custom API for APMC/CAMPCO Batch Sync</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-8">
+            <button id="btn-tier-wholesale" onclick="selectTier('wholesale')" class="w-full py-3 px-4 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm">
+              Activate Wholesale Pass (₹2999/mo)
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODALS (BOOKING, RATING, REGISTRATION, LISTING) -->
+  <!-- ========================================== -->
+
+  <!-- MODAL 1: BOOKING & INSTANT KHATA WAGE SYNC -->
+  <div id="booking-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 modal-content transform scale-95 opacity-0 transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-calendar-check"></i>
+          </div>
+          <h3 class="text-base font-extrabold text-slate-900" data-i18n="modalBookingTitle">Book Laborer / Mukkadam Crew</h3>
+        </div>
+        <button onclick="closeModal('booking-modal')" class="text-slate-400 hover:text-slate-700 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div id="booking-worker-summary" class="bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-4 flex items-center justify-between">
+        <!-- Injected dynamically -->
+      </div>
+
+      <form id="booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-4">
+        <input type="hidden" id="booking-worker-id">
+        <input type="hidden" id="booking-worker-rate">
+        <input type="hidden" id="booking-worker-name">
+        <input type="hidden" id="booking-worker-skill">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="bookingStartDate">Work Date</label>
+            <input type="date" id="booking-date-input" required class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="bookingDuration">Duration / Trees</label>
+            <select id="booking-duration-select" onchange="calculateBookingTotal()" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600">
+              <option value="1">1 Day Full Shift</option>
+              <option value="2">2 Days (Extended Harvest)</option>
+              <option value="3">3 Days (Complete Plantation)</option>
+              <option value="0.5">Half Day Shift (4 Hours)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="bookingPaymentMode">Payment Method (Khata Log Mode)</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="flex items-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
+              <input type="radio" name="booking-payment" value="Field Cash" checked class="text-emerald-700 focus:ring-emerald-600 mr-2">
+              <div>
+                <span class="block text-xs font-bold text-slate-800">💵 Field Cash</span>
+                <span class="block text-[10px] text-slate-500">Pay on site after work</span>
+              </div>
+            </label>
+            <label class="flex items-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
+              <input type="radio" name="booking-payment" value="UPI Escrow" class="text-emerald-700 focus:ring-emerald-600 mr-2">
+              <div>
+                <span class="block text-xs font-bold text-slate-800">📱 UPI Escrow</span>
+                <span class="block text-[10px] text-slate-500">Held safe until approval</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-200 flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-emerald-800" data-i18n="bookingEstTotal">Estimated Total Wage</span>
+            <span class="block text-[10px] text-emerald-600">Directly recorded in Daily Wage Khata</span>
+          </div>
+          <span id="booking-total-display" class="text-2xl font-black text-emerald-900">₹850</span>
+        </div>
+
+        <div class="flex items-center gap-3 pt-2">
+          <button type="button" onclick="closeModal('booking-modal')" class="w-1/2 py-2.5 px-4 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
+            Cancel
+          </button>
+          <button type="submit" class="w-1/2 py-2.5 px-4 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white transition shadow-md flex items-center justify-center space-x-1.5">
+            <i class="fa-solid fa-check"></i>
+            <span data-i18n="confirmBookingBtn">Confirm & Log Khata</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: POST-WORK EMOJI RATING SIMULATOR -->
+  <div id="rating-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 modal-content transform scale-95 opacity-0 transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-star-half-stroke"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900" data-i18n="ratingModalTitle">Post-Work Live Rating Simulator</h3>
+            <p class="text-[11px] text-slate-500">Dynamically recalibrates Smart Rank Score & Directory placement</p>
+          </div>
+        </div>
+        <button onclick="closeModal('rating-modal')" class="text-slate-400 hover:text-slate-700 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div id="rating-worker-header" class="text-center pb-4 mb-4 border-b border-slate-100">
+        <!-- Injected dynamically -->
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-xs font-bold text-slate-700 mb-2 text-center" data-i18n="oneTapRatingLabel">
+          1-Tap Instant Feedback:
+        </label>
+        
+        <div class="grid grid-cols-1 gap-2.5">
+          <button type="button" onclick="applyEmojiRating(5.0, '⭐⭐⭐⭐⭐ On Time ⏰')" class="p-3 rounded-2xl border-2 border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-left transition flex items-center justify-between group">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">⏰</span>
+              <div>
+                <span class="block text-xs font-bold text-emerald-950">⭐⭐⭐⭐⭐ On Time & Excellent (5.0)</span>
+                <span class="block text-[10px] text-emerald-700">Punctual, skilled harvest, climbed all tagged trees</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-emerald-600 opacity-0 group-hover:opacity-100 transition"></i>
+          </button>
+
+          <button type="button" onclick="applyEmojiRating(4.8, '⭐⭐⭐⭐⭐ Hard Working 💪')" class="p-3 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-left transition flex items-center justify-between group">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">💪</span>
+              <div>
+                <span class="block text-xs font-bold text-slate-900">⭐⭐⭐⭐⭐ Hard Working & Skilled (4.8)</span>
+                <span class="block text-[10px] text-slate-500">Very reliable crew, good tool maintenance</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-slate-400 opacity-0 group-hover:opacity-100 transition"></i>
+          </button>
+
+          <button type="button" onclick="applyEmojiRating(3.5, '⭐⭐⭐ Average 👍')" class="p-3 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-left transition flex items-center justify-between group">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">👍</span>
+              <div>
+                <span class="block text-xs font-bold text-slate-900">⭐⭐⭐ Average Work (3.5)</span>
+                <span class="block text-[10px] text-slate-500">Task completed but needed some supervision</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-slate-400 opacity-0 group-hover:opacity-100 transition"></i>
+          </button>
+
+          <button type="button" onclick="applyEmojiRating(1.5, '⭐ Late / No-Show ⚠️')" class="p-3 rounded-2xl border-2 border-red-200 bg-red-50 hover:bg-red-100 text-left transition flex items-center justify-between group">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">⚠️</span>
+              <div>
+                <span class="block text-xs font-bold text-red-950">⭐ Late / Unreliable / Low Rating (1.5)</span>
+                <span class="block text-[10px] text-red-700">Demotes rank & triggers ⬇️ Low Rating warning badge</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-red-600 opacity-0 group-hover:opacity-100 transition"></i>
+          </button>
+        </div>
+      </div>
+
+      <p class="text-[10px] text-slate-400 text-center italic">
+        *Coastal Karnataka reputation engine recalculates weighted proximity & reliability immediately.
+      </p>
+    </div>
+  </div>
+
+  <!-- MODAL 3: WORKER / CREW REGISTRATION MODAL -->
+  <div id="worker-reg-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 modal-content transform scale-95 opacity-0 transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-id-card"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900" data-i18n="regModalTitle">Register Worker or Mukkadam Crew</h3>
+            <p class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Instant 🚀 NEWCOMER BOOST (Starter Score 88/100)</span>
+            </p>
+          </div>
+        </div>
+        <button onclick="closeModal('worker-reg-modal')" class="text-slate-400 hover:text-slate-700 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="worker-reg-form" onsubmit="handleWorkerRegistration(event)" class="space-y-3.5">
+        
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="regName">Worker / Crew Leader Name</label>
+          <input type="text" id="reg-name" required placeholder="e.g. Mahabala Naik Crew" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="regType">Hiring Category</label>
+            <select id="reg-type" onchange="toggleCrewSizeField()" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+              <option value="crew">👥 Group Crew (Mukkadam)</option>
+              <option value="single">👤 Single Worker</option>
+            </select>
+          </div>
+          <div id="reg-crew-size-wrapper">
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="regCrewSize">Crew Size (Members)</label>
+            <input type="number" id="reg-crew-size" min="2" max="15" value="6" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="regSkill">Primary Skill / Trade</label>
+            <select id="reg-skill" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+              <option value="arecanut">🌴 Arecanut & Coconut Harvesting</option>
+              <option value="weeding">🌿 Weeding & Grass Clearing</option>
+              <option value="paddy">🌾 Paddy & Crop Harvesting</option>
+              <option value="mechanic">🔧 Pump & Motor Mechanic</option>
+              <option value="masonry">🧱 Rural Masonry & Fencing</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="regTaluk">Home Taluk / Panchayat</label>
+            <select id="reg-taluk" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+              <option value="Beltangady / Kuvettu">Beltangady / Kuvettu</option>
+              <option value="Puttur Taluk">Puttur Taluk</option>
+              <option value="Udupi Rural">Udupi Rural</option>
+              <option value="Karkala">Karkala</option>
+              <option value="Mangaluru Outskirts">Mangaluru Outskirts</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="regWage">Daily Wage / Crew Rate (₹)</label>
+            <input type="number" id="reg-wage" required min="300" step="50" placeholder="e.g. 3400" class="w-full text-xs font-bold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="regPhone">Mobile Phone (WhatsApp)</label>
+            <input type="tel" id="reg-phone" required placeholder="98450 XXXXX" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="regTools">Tools Owned</label>
+          <input type="text" id="reg-tools" placeholder="e.g. Climbing gears, STIHL Brush Cutters, Telescopic Sprayer" class="w-full text-xs font-medium p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+        </div>
+
+        <div class="bg-blue-50 rounded-2xl p-3 border border-blue-200 text-xs text-blue-900 flex items-center gap-2">
+          <i class="fa-solid fa-rocket text-blue-600 text-lg"></i>
+          <span>Newcomers get an initial boost score of <strong>88/100</strong> to guarantee first job inquiries within their Gram Panchayat!</span>
+        </div>
+
+        <div class="flex items-center gap-3 pt-2">
+          <button type="button" onclick="closeModal('worker-reg-modal')" class="w-1/2 py-2.5 px-4 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
+            Cancel
+          </button>
+          <button type="submit" class="w-1/2 py-2.5 px-4 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white transition shadow-md flex items-center justify-center space-x-1.5">
+            <i class="fa-solid fa-user-check"></i>
+            <span data-i18n="regSubmitBtn">Register & Boost</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 4: LIST MY HARVEST DIRECTLY (MODULE 3) -->
+  <div id="list-produce-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 modal-content transform scale-95 opacity-0 transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-boxes-packing"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900" data-i18n="listProduceTitle">List My Harvest Lot Directly</h3>
+            <p class="text-[11px] text-slate-500" data-i18n="listProduceSub">Direct to APMC-exempt buyers & processing mills in DK & Udupi</p>
+          </div>
+        </div>
+        <button onclick="closeModal('list-produce-modal')" class="text-slate-400 hover:text-slate-700 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="list-produce-form" onsubmit="handleProduceSubmit(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="produceFarmerName">Farmer / Plantation Name</label>
+          <input type="text" id="produce-farmer-name" required placeholder="e.g. Ramesh Hegde Farm" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="produceCropType">Produce Type</label>
+            <select id="produce-crop-select" onchange="updateMandiBenchmarkHint()" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+              <option value="arecanut">Red Arecanut (Chali / Rashi)</option>
+              <option value="pepper">Black Pepper (Graded Malabar)</option>
+              <option value="coconut">Tender / Copra Coconut</option>
+              <option value="banana">Nendran / Robusta Banana</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="produceTaluk">Location / Taluk</label>
+            <select id="produce-taluk-select" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+              <option value="Beltangady / Kuvettu">Beltangady / Kuvettu</option>
+              <option value="Puttur Taluk">Puttur Taluk</option>
+              <option value="Udupi Rural">Udupi Rural</option>
+              <option value="Karkala">Karkala</option>
+              <option value="Mangaluru Outskirts">Mangaluru Outskirts</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="produceQuantity">Quantity Available (kg)</label>
+            <input type="number" id="produce-qty" required min="50" step="10" placeholder="e.g. 750" class="w-full text-xs font-bold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="produceAskPrice">Direct Ask Price (₹ / kg)</label>
+            <input type="number" id="produce-ask-price" required min="10" step="1" placeholder="e.g. 495" class="w-full text-xs font-bold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+          </div>
+        </div>
+
+        <!-- Mandi Benchmark Auto-Hint -->
+        <div id="mandi-benchmark-box" class="bg-emerald-50 rounded-xl p-3 border border-emerald-200 text-xs text-emerald-900 flex items-center justify-between">
+          <span>CAMPCO / Mandi Benchmark: <strong>₹465/kg</strong></span>
+          <span class="text-amber-700 font-bold">+₹30/kg Direct Premium</span>
+        </div>
+
+        <div class="flex items-center gap-3 pt-2">
+          <button type="button" onclick="closeModal('list-produce-modal')" class="w-1/2 py-2.5 px-4 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
+            Cancel
+          </button>
+          <button type="submit" class="w-1/2 py-2.5 px-4 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-emerald-950 transition shadow-md flex items-center justify-center space-x-1.5">
+            <i class="fa-solid fa-bullhorn"></i>
+            <span data-i18n="publishHarvestBtn">Publish Direct Lot</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 5: CONNECT & BUY DIRECT (BUYER ESCROW TRANSACTION) -->
+  <div id="buyer-connect-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 modal-content transform scale-95 opacity-0 transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-handshake"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900" data-i18n="buyerModalTitle">Connect & Buy Direct</h3>
+            <p class="text-[11px] text-slate-500">Zero broker margin commission direct procurement</p>
+          </div>
+        </div>
+        <button onclick="closeModal('buyer-connect-modal')" class="text-slate-400 hover:text-slate-700 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div id="buyer-modal-details" class="bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-4">
+        <!-- Injected dynamically -->
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Procurement Quantity (kg)</label>
+          <input type="number" id="buyer-order-qty" value="250" min="50" step="25" oninput="calculateBuyerOrderTotal()" class="w-full text-xs font-bold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600">
+        </div>
+
+        <div class="bg-emerald-50 rounded-2xl p-3 border border-emerald-200 flex items-center justify-between">
+          <span class="text-xs font-bold text-emerald-900">Total Purchase Value</span>
+          <span id="buyer-order-total" class="text-lg font-black text-emerald-950">₹0</span>
+        </div>
+
+        <div class="pt-2 flex flex-col gap-2">
+          <button onclick="confirmBuyerPurchase()" class="w-full py-3 px-4 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white transition shadow-md flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Initiate Direct Escrow Order</span>
+          </button>
+          <button onclick="directCallFarmer()" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold border border-slate-200 text-slate-700 hover:bg-slate-50 transition flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-phone text-emerald-700"></i>
+            <span>Call Farmer Directly</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 6: NOTIFICATIONS & LOCAL AREA ALERTS (NEW WORKER REGISTRATION ALERTS) -->
+  <div id="notifications-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 modal-content transform scale-95 opacity-0 transition-all flex flex-col max-h-[88vh]">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-extrabold text-slate-900" data-i18n="notificationsTitle">Notifications & Alerts</h3>
+              <span id="notif-modal-unread-pill" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700 border border-red-200">2 New</span>
+            </div>
+            <p class="text-[11px] text-slate-500" data-i18n="notificationsSub">Live alerts for newly registered crews, Mandi price spikes & booking updates</p>
+          </div>
+        </div>
+        <button onclick="closeModal('notifications-modal')" class="text-slate-400 hover:text-slate-700 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="flex items-center justify-between py-2.5 text-xs border-b border-slate-100 shrink-0">
+        <span class="text-slate-500 font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-location-dot text-emerald-600"></i>
+          <span>Active Area: <strong id="notif-area-label" class="text-emerald-900">Beltangady / Kuvettu</strong></span>
+        </span>
+        <button onclick="markAllNotificationsRead()" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1">
+          <i class="fa-solid fa-check-double"></i>
+          <span data-i18n="markAllRead">Mark all as read</span>
+        </button>
+      </div>
+
+      <!-- Notifications List (Scrollable) -->
+      <div id="notifications-list" class="overflow-y-auto space-y-3 py-3 flex-grow pr-1">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 shrink-0 flex items-center justify-between text-[11px] text-slate-400">
+        <span data-i18n="notifAreaAutoAlerts">Automatic SMS & Voice alerts are enabled for your Panchayat</span>
+        <button onclick="clearAllNotifications()" class="text-red-500 hover:underline font-semibold" data-i18n="clearAll">Clear</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 7: LOGIN & ROLE SELECTION SYSTEM (FARMER VS LABOURER) -->
+  <div id="login-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 modal-content transform scale-95 opacity-0 transition-all modal-body-scroll">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900" data-i18n="loginTitle">AgriConnect Login & Role Selection</h3>
+            <p class="text-[11px] text-slate-500" data-i18n="loginSub">Connect as a Landowner/Farmer or as an Agricultural Worker/Crew</p>
+          </div>
+        </div>
+        <button onclick="closeModal('login-modal')" class="text-slate-400 hover:text-slate-700 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- ROLE SELECTION STEP: CHOOSE FARMER OR LABOURER -->
+      <div class="mb-4">
+        <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2" data-i18n="selectRole">
+          Step 1: Choose Your Role (ನಿಮ್ಮ ಪಾತ್ರವನ್ನು ಆಯ್ಕೆಮಾಡಿ)
+        </label>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          
+          <!-- Role A: Farmer / Landowner -->
+          <div onclick="selectLoginRole('farmer')" id="role-card-farmer" class="role-radio-card active p-3.5 rounded-2xl border-2 border-emerald-600 bg-emerald-50/60 cursor-pointer transition hover:bg-emerald-50">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-2xl">👨‍🌾</span>
+              <span id="role-check-farmer" class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">
+                <i class="fa-solid fa-check"></i>
+              </span>
+            </div>
+            <h4 class="text-xs font-black text-slate-900" data-i18n="roleFarmer">Farmer / Landowner</h4>
+            <p class="text-[10px] text-slate-500 mt-0.5 leading-snug" data-i18n="roleFarmerDesc">
+              Hire harvest crews, discover direct Mandi prices, track farm daily wage khata
+            </p>
+          </div>
+
+          <!-- Role B: Labourer / Mukkadam Crew -->
+          <div onclick="selectLoginRole('labourer')" id="role-card-labourer" class="role-radio-card p-3.5 rounded-2xl border-2 border-slate-200 bg-slate-50 cursor-pointer transition hover:bg-slate-100">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-2xl">👷</span>
+              <span id="role-check-labourer" class="w-5 h-5 rounded-full bg-slate-300 text-transparent flex items-center justify-center text-[10px]">
+                <i class="fa-solid fa-check"></i>
+              </span>
+            </div>
+            <h4 class="text-xs font-black text-slate-900" data-i18n="roleLabour">Labourer / Mukkadam Crew</h4>
+            <p class="text-[10px] text-slate-500 mt-0.5 leading-snug" data-i18n="roleLabourDesc">
+              Find harvesting & off-season trade work, set wage rates & availability
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- STEP 2: PHONE & PROFILE DETAILS FORM -->
+      <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-3">
+        <input type="hidden" id="login-selected-role" value="farmer">
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="nameInputLabel">Full Name (ಪೂರ್ಣ ಹೆಸರು)</label>
+          <input type="text" id="login-name-input" required placeholder="e.g. Mahalinga Bhat" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="phoneInputLabel">Mobile Number (ಮೊಬೈಲ್)</label>
+            <input type="tel" id="login-phone-input" required placeholder="98450 XXXXX" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="activeLocationLabel">Gram Panchayat / Taluk</label>
+            <select id="login-panchayat-select" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+              <option value="Beltangady / Kuvettu">Beltangady / Kuvettu</option>
+              <option value="Puttur Taluk">Puttur Taluk</option>
+              <option value="Udupi Rural">Udupi Rural</option>
+              <option value="Karkala">Karkala</option>
+              <option value="Mangaluru Outskirts">Mangaluru Outskirts</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 px-4 rounded-xl text-xs font-extrabold bg-emerald-700 hover:bg-emerald-800 text-white transition shadow-md flex items-center justify-center space-x-2 mt-2">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span data-i18n="sendOtp">Instant OTP Verification & Login</span>
+        </button>
+      </form>
+
+      <!-- STEP 3: 1-CLICK DEMO ACCOUNTS FOR INSTANT TESTING -->
+      <div class="mt-5 pt-4 border-t border-slate-100">
+        <span class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 text-center" data-i18n="quickDemoAccounts">
+          ⚡ 1-Click Demo Profiles (ತ್ವರಿತ ಡೆಮೊ ಪ್ರೊಫೈಲ್):
+        </span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button type="button" onclick="loginDemoAccount('farmer')" class="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-left transition flex items-center space-x-2.5">
+            <span class="text-xl">👨‍🌾</span>
+            <div class="leading-tight">
+              <span class="block text-xs font-extrabold text-emerald-950">Mahalinga Bhat</span>
+              <span class="block text-[10px] text-emerald-700">Areca Farmer • Beltangady</span>
+            </div>
+          </button>
+          <button type="button" onclick="loginDemoAccount('labourer')" class="p-2.5 rounded-xl border border-amber-200 bg-amber-50 hover:bg-amber-100 text-left transition flex items-center space-x-2.5">
+            <span class="text-xl">👷</span>
+            <div class="leading-tight">
+              <span class="block text-xs font-extrabold text-amber-950">Anand Gowda Crew</span>
+              <span class="block text-[10px] text-amber-700">Crew Leader (8) • Beltangady</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 8: USER PROFILE & SETTINGS MODAL -->
+  <div id="profile-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 modal-content transform scale-95 opacity-0 transition-all modal-body-scroll">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-user-gear"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900" data-i18n="profileTitle">My AgriConnect Profile</h3>
+            <p class="text-[11px] text-slate-500" data-i18n="profileSub">Manage role preferences, contact details, and worker status</p>
+          </div>
+        </div>
+        <button onclick="closeModal('profile-modal')" class="text-slate-400 hover:text-slate-700 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- PROFILE HEADER CARD -->
+      <div class="bg-gradient-to-r from-emerald-900 to-emerald-950 rounded-2xl p-4 text-white shadow-md flex items-center justify-between mb-4">
+        <div class="flex items-center space-x-3">
+          <div id="profile-modal-avatar" class="w-12 h-12 rounded-2xl bg-amber-400 text-emerald-950 font-black text-base flex items-center justify-center shadow-md">
+            MB
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h4 id="profile-modal-name" class="text-base font-extrabold text-white">Mahalinga Bhat</h4>
+              <span id="profile-modal-role-pill" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-emerald-950">
+                👨‍🌾 Farmer
+              </span>
+            </div>
+            <p id="profile-modal-phone" class="text-xs text-emerald-200 font-medium">+91 94481 29384</p>
+            <p id="profile-modal-panchayat" class="text-[11px] text-emerald-300">📍 Beltangady / Kuvettu</p>
+          </div>
+        </div>
+
+        <button onclick="toggleUserRole()" class="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 text-xs font-bold transition shadow-sm flex items-center gap-1.5">
+          <i class="fa-solid fa-repeat"></i>
+          <span id="profile-switch-btn-text">Switch Role</span>
+        </button>
+      </div>
+
+      <!-- DYNAMIC STATS BASED ON ROLE -->
+      <div id="profile-stats-container" class="grid grid-cols-3 gap-2.5 mb-4">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- LABOURER STATUS CONFIG (Visible when role is Labourer) -->
+      <div id="profile-labourer-section" class="hidden bg-amber-50 rounded-2xl p-4 border border-amber-200 mb-4">
+        <h4 class="text-xs font-black text-amber-950 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+          <i class="fa-solid fa-id-badge text-amber-700"></i>
+          <span>Labourer Work Settings</span>
+        </h4>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[11px] font-bold text-amber-900 mb-1" data-i18n="myAvailability">Today's Availability Status:</label>
+            <div class="grid grid-cols-3 gap-1.5 text-xs font-bold">
+              <button type="button" onclick="setLabourerAvailability('available')" class="p-2 rounded-xl bg-emerald-600 text-white text-center shadow-sm">
+                🟢 Available
+              </button>
+              <button type="button" onclick="setLabourerAvailability('partial')" class="p-2 rounded-xl bg-amber-200 text-amber-900 text-center">
+                🟡 Booked
+              </button>
+              <button type="button" onclick="setLabourerAvailability('busy')" class="p-2 rounded-xl bg-slate-200 text-slate-700 text-center">
+                🔴 Busy
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-amber-900 mb-1" data-i18n="myDailyWage">My Daily Wage Rate (₹):</label>
+            <div class="flex gap-2">
+              <input type="number" id="profile-wage-input" value="3600" min="400" step="50" class="flex-1 text-xs font-bold p-2 bg-white border border-amber-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-600">
+              <button type="button" onclick="updateLabourerWage()" class="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold">
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE EDIT FORM -->
+      <form id="profile-edit-form" onsubmit="handleProfileUpdate(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="nameInputLabel">Edit Display Name</label>
+          <input type="text" id="profile-edit-name" required class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="phoneInputLabel">Phone Number</label>
+            <input type="tel" id="profile-edit-phone" required class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="activeLocationLabel">Gram Panchayat</label>
+            <select id="profile-edit-panchayat" class="w-full text-xs font-semibold p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white">
+              <option value="Beltangady / Kuvettu">Beltangady / Kuvettu</option>
+              <option value="Puttur Taluk">Puttur Taluk</option>
+              <option value="Udupi Rural">Udupi Rural</option>
+              <option value="Karkala">Karkala</option>
+              <option value="Mangaluru Outskirts">Mangaluru Outskirts</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 pt-2">
+          <button type="button" onclick="logoutUser()" class="w-1/3 py-2.5 px-3 rounded-xl text-xs font-bold border border-red-200 text-red-600 hover:bg-red-50 transition" data-i18n="logoutBtn">
+            <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i>Logout
+          </button>
+          <button type="submit" class="w-2/3 py-2.5 px-4 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white transition shadow-md flex items-center justify-center space-x-1.5">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span data-i18n="saveProfileBtn">Save Profile Details</span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- STICKY MOBILE BOTTOM NAVIGATION BAR -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-emerald-950/95 border-t border-emerald-800/80 mobile-bottom-nav px-2 py-2 flex items-center justify-around text-center">
+    <button onclick="switchTab('workforce')" id="bottom-nav-workforce" class="flex-1 py-1 text-amber-400 flex flex-col items-center">
+      <i class="fa-solid fa-people-group text-lg"></i>
+      <span class="text-[10px] font-bold mt-0.5" data-i18n="tabWorkforce">Workforce</span>
+    </button>
+    <button onclick="switchTab('market')" id="bottom-nav-market" class="flex-1 py-1 text-emerald-300 hover:text-white flex flex-col items-center">
+      <i class="fa-solid fa-chart-line text-lg"></i>
+      <span class="text-[10px] font-bold mt-0.5" data-i18n="tabMarket">Mandi</span>
+    </button>
+    <button onclick="switchTab('khata')" id="bottom-nav-khata" class="flex-1 py-1 text-emerald-300 hover:text-white flex flex-col items-center">
+      <i class="fa-solid fa-book-bookmark text-lg"></i>
+      <span class="text-[10px] font-bold mt-0.5" data-i18n="tabKhata">Khata</span>
+    </button>
+    <button onclick="openModal('notifications-modal')" class="flex-1 py-1 text-emerald-300 hover:text-white flex flex-col items-center relative">
+      <i class="fa-solid fa-bell text-lg"></i>
+      <span id="bottom-notif-badge" class="absolute top-0 right-1/4 w-4 h-4 bg-red-500 text-white font-extrabold text-[9px] rounded-full flex items-center justify-center">2</span>
+      <span class="text-[10px] font-bold mt-0.5" data-i18n="notificationsTitle">Alerts</span>
+    </button>
+    <button onclick="openModal('profile-modal')" class="flex-1 py-1 text-emerald-300 hover:text-white flex flex-col items-center">
+      <div id="bottom-nav-avatar" class="w-5 h-5 rounded-full bg-amber-400 text-emerald-950 text-[10px] font-black flex items-center justify-center">MB</div>
+      <span class="text-[10px] font-bold mt-0.5" data-i18n="profileNav">Profile</span>
+    </button>
+  </nav>
+
+  <!-- FLOATING TOAST NOTIFICATION CONTAINER (BOTTOM-RIGHT) -->
+  <div id="toast-container"></div>
+
+  <!-- FOOTER -->
+  <footer class="bg-emerald-950 text-emerald-200 text-xs py-8 border-t border-emerald-900 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 pb-6 border-b border-emerald-900/60">
+        <div class="md:col-span-2">
+          <div class="flex items-center space-x-2 mb-2">
+            <div class="w-7 h-7 rounded-lg bg-amber-400 flex items-center justify-center text-emerald-950 font-bold">
+              <i class="fa-solid fa-wheat-awn"></i>
+            </div>
+            <span class="text-base font-black text-white">AgriConnect Coastal Karnataka</span>
+          </div>
+          <p class="text-emerald-300/80 text-xs max-w-sm">
+            Empowering smallholders in Dakshina Kannada & Udupi with transparent workforce discovery and direct Mandi market access to eliminate middleman margins.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-bold text-white uppercase text-[11px] tracking-wider mb-2">Key Panchayats Served</h4>
+          <ul class="space-y-1 text-emerald-300/80">
+            <li>• Beltangady, Kuvettu & Dharmasthala</li>
+            <li>• Puttur, Uppinangady & Sullia</li>
+            <li>• Udupi Rural, Brahmavar & Karkala</li>
+            <li>• Mangaluru, Moodbidri & Bantwal</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-white uppercase text-[11px] tracking-wider mb-2">Kisan Support</h4>
+          <ul class="space-y-1 text-emerald-300/80">
+            <li>📞 Kisan Helpline: <strong>1800-180-1551</strong></li>
+            <li>🏛️ CAMPCO Puttur: <strong>08251-230550</strong></li>
+            <li>⚖️ Zero Middleman Commission Guarantee</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-emerald-400">
+        <p>© 2026 AgriConnect — Rural Workforce & Direct Market Platform. Production Grade.</p>
+        <p class="mt-1 sm:mt-0">Built with HTML5, Tailwind CSS, FontAwesome & Vanilla ES6+ JS.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Vanilla JavaScript Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

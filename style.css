@@ -1,0 +1,208 @@
+/* AgriConnect — Coastal Karnataka Rural Workforce & Direct Market Platform */
+/* Fonts & Reset */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Kannada:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-emerald: #064e3b;
+  --emerald-medium: #047857;
+  --emerald-light: #10b981;
+  --amber-warm: #f59e0b;
+  --amber-gold: #fbbf24;
+  --amber-dark: #b45309;
+  --bg-slate: #f4f7f4;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+}
+
+body {
+  font-family: 'Inter', 'Noto Sans Kannada', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-slate);
+  color: var(--text-main);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Voice Button Pulsing Ring */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 14px rgba(245, 158, 11, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+.voice-pulse {
+  animation: pulse-ring 2s infinite cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+@keyframes listening-wave {
+  0%, 100% { height: 6px; }
+  50% { height: 28px; }
+}
+
+.wave-bar {
+  animation: listening-wave 1.2s ease-in-out infinite;
+}
+.wave-bar:nth-child(2) { animation-delay: 0.15s; }
+.wave-bar:nth-child(3) { animation-delay: 0.3s; }
+.wave-bar:nth-child(4) { animation-delay: 0.45s; }
+.wave-bar:nth-child(5) { animation-delay: 0.6s; }
+
+/* Custom Badge Glows */
+.badge-top-match {
+  background: linear-gradient(135deg, #047857 0%, #064e3b 100%);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);
+}
+
+.badge-newcomer {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border: 1px solid rgba(147, 197, 253, 0.5);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.badge-low-rating {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+/* Card Transitions */
+.worker-card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.worker-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -6px rgba(6, 78, 59, 0.12), 0 4px 8px -4px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom Range Slider */
+input[type="range"] {
+  accent-color: #047857;
+}
+
+/* Toast Container */
+#toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.toast-item {
+  pointer-events: auto;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(20px);
+  opacity: 0;
+}
+.toast-item.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Modal Animations */
+.modal-overlay {
+  transition: opacity 0.25s ease-out;
+}
+.modal-content {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease-out;
+}
+
+/* Tooltip */
+.tooltip-box {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.has-tooltip:hover .tooltip-box {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Notification Bell Pulse */
+@keyframes bell-ring {
+  0%, 100% { transform: rotate(0); }
+  20%, 60% { transform: rotate(15deg); }
+  40%, 80% { transform: rotate(-15deg); }
+}
+
+.bell-ring {
+  animation: bell-ring 1.5s ease infinite;
+  transform-origin: top center;
+}
+
+@keyframes notif-glow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  50% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+.notif-badge-pulse {
+  animation: notif-glow 2s infinite cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/* Mobile Bottom Navigation */
+.mobile-bottom-nav {
+  box-shadow: 0 -4px 16px -2px rgba(6, 78, 59, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+}
+
+/* Touch Friendly Targets */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Mobile Friendly Modals */
+.modal-body-scroll {
+  max-height: calc(88vh - 120px);
+  overflow-y: auto;
+}
+
+/* Role Selector Radio Cards */
+.role-radio-card.active {
+  border-color: #047857;
+  background-color: #ecfdf5;
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.15);
+}
+
+/* Hide scrollbar for clean horizontal scrolls */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
