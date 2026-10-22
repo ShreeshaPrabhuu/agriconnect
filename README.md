@@ -51,5 +51,5 @@ Since this is a static web application, no complex build tools or servers are re
 
 ## 👥 Team
 **Team Name:** Team AgriConnect
-*   **Shreesha S. Prabhu** - Full-Stack & UI/UX 
+*   **Shreesha S. Prabhu**  
 *   **Eureka** - Research & Presentation
